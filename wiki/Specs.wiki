@@ -2,7 +2,7 @@
 
 == Version 0.1 ==
 
-The prototype will implement the eight basic commands of the [http://en.wikipedia.org/wiki/Brainfuck Brainfuck] programming language mapped to the following notation
+The prototype will implement the eight commands of the [http://en.wikipedia.org/wiki/Brainfuck Brainfuck] programming language mapped to the following notation
 
 || *U* || *<* || increment the data pointer to the next cell to the right ||
 || *U'* || *>* || decrement the data pointer to the next cell to the right ||
