@@ -23,4 +23,5 @@ The prototype will implement the eight commands of the [http://en.wikipedia.org/
 
 The second version of the compiler will include all the function of version 0.1 with additional support for the following commands
 
-||L_X_ || if the byte at the current data pointer is not equal to 0 then skip the next _X_ `commands`. 
+||L_X_ || if the byte at the current data pointer is equal to 0 then skip the next _X_ commands
+|| L'X || if the byte at the current data pointer is *not* equal to 0 then skip the next _X_ commands
