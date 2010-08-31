@@ -1,4 +1,4 @@
-#summary Specification and Road map for the *Rubik's Cube Notation* programming language*.
+#summary Specification and Road map for the *Rubik's Cube Notation* programming language.
 
 == Version 0.1 ==
 
