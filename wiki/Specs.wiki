@@ -3,7 +3,7 @@
 == Version 0.1 ==
 
 The prototype will implement the eight commands of the [http://en.wikipedia.org/wiki/Brainfuck Brainfuck] programming language mapped to the following notation
-
+|| *RCN* || Brainfuck || description ||
 || *U* || *<* || increment the data pointer to the next cell to the right ||
 || *U'* || *>* || decrement the data pointer to the next cell to the right ||
 || *R* || *>* || increment the byte at the data pointer ||
@@ -23,5 +23,5 @@ The prototype will implement the eight commands of the [http://en.wikipedia.org/
 
 The second version of the compiler will include all the function of version 0.1 with additional support for the following commands
 
-||L_X_ || if the byte at the current data pointer is equal to 0 then skip the next _X_ commands
-|| L'X || if the byte at the current data pointer is *not* equal to 0 then skip the next _X_ commands
+||L_X_ || if the byte at the current data pointer is equal to 0 then skip the next _X_ commands || 
+|| L'X || if the byte at the current data pointer is *not* equal to 0 then skip the next _X_ commands ||
