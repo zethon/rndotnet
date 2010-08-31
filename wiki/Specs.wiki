@@ -1,4 +1,4 @@
-#summary Specification and Road map for the *Rubik's Cube Notation* programming language.
+#summary Specification and Road map for the Rubik's Cube Notation programming language.
 
 == Version 0.1 ==
 
@@ -18,3 +18,9 @@ The prototype will implement the eight commands of the [http://en.wikipedia.org/
 
   * Numbers can be added to the U, R, F commands. When appending numbers to a command with a prime symbol ( *'* ), the order of the prime symbol is irrelevant. For example *R2'* is the same as *R'2*. The number appended is one byte in size.
   * Multiple prime symbols will toggle the _prime status_ of the command. For example *R2* is the same as *R2''*.
+
+== Version 0.2 ==
+
+The second version of the compiler will include all the function of version 0.1 with additional support for the following commands
+
+||L_X_ || if the byte at the current data pointer is not equal to 0 then skip the next _X_ `commands`. 
