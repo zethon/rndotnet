@@ -25,8 +25,6 @@ namespace RubiksNotation
                 }
 
                 Parser p = new Parser(scanner.Tokens);
-
-
             }
             catch (Exception ex)
             {
