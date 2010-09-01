@@ -25,6 +25,7 @@ namespace RubiksNotation
                 }
 
                 Parser p = new Parser(scanner.Tokens);
+                CodeGen gen = new CodeGen(p.Result, @"test.exe");
             }
             catch (Exception ex)
             {
