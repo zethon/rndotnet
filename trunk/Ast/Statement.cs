@@ -11,6 +11,12 @@ namespace RubiksNotation
         Subtract
     }
 
+    public enum PointerOperator
+    {
+        Inc,
+        Dec
+    }
+
     public abstract class Statement
     {
         public int Value = 1;
@@ -29,6 +35,11 @@ namespace RubiksNotation
     public class ReadInt : Statement
     {
 
+    }
+
+    public class PointerStatement : Statement
+    {
+        public PointerOperator Op;
     }
 
     public class WhileStatement : Statement
