@@ -48,6 +48,7 @@
     <Compile Include="Ast\Expression.cs" />
     <Compile Include="Ast\Sequence.cs" />
     <Compile Include="Ast\Statement.cs" />
+    <Compile Include="CodeGen.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
