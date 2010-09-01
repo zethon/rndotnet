@@ -89,22 +89,27 @@ namespace RubiksNotation
 
                 if (m.Op == MathOperator.Add)
                 {
+                    // TODO: revist addition behavior with wrap of byte
+
                     _il.Emit(OpCodes.Ldloc, _Array);
                     _il.Emit(OpCodes.Ldloc, _Ptr);
                     _il.Emit(OpCodes.Ldloc, _Array);
                     _il.Emit(OpCodes.Ldloc, _Ptr);
                     _il.Emit(OpCodes.Ldelem_I4);
-                    _il.Emit(OpCodes.Ldc_I4_1);
+                    _il.Emit(OpCodes.Ldc_I4,m.Value);
                     _il.Emit(OpCodes.Add);
                     _il.Emit(OpCodes.Stelem_I4);
                 }
                 else if (m.Op == MathOperator.Subtract)
                 {
+                    // TODO: revist substraction behavior with wrap of byte
+
                     _il.Emit(OpCodes.Ldloc, _Array);
                     _il.Emit(OpCodes.Ldloc, _Ptr);
                     _il.Emit(OpCodes.Ldloc, _Array);
                     _il.Emit(OpCodes.Ldloc, _Ptr);
                     _il.Emit(OpCodes.Ldelem_I4);
+
                     Label notTooNegative = _il.DefineLabel();
                     _il.Emit(OpCodes.Dup);
                     _il.Emit(OpCodes.Ldc_I4, 256);
@@ -113,30 +118,37 @@ namespace RubiksNotation
                     _il.Emit(OpCodes.Pop);	// wrap from -256 to 255
                     _il.Emit(OpCodes.Ldc_I4, 256);
                     _il.MarkLabel(notTooNegative);
-                    _il.Emit(OpCodes.Ldc_I4_1);
+                    
+                    _il.Emit(OpCodes.Ldc_I4, m.Value);
                     _il.Emit(OpCodes.Sub);
                     _il.Emit(OpCodes.Stelem_I4);
                 }
             }
             else if (stmt is Print)
             {
-                _il.Emit(OpCodes.Ldloc, _Array);
-                _il.Emit(OpCodes.Ldloc, _Ptr);
-                _il.Emit(OpCodes.Ldelem_I4);
-                _il.Emit(OpCodes.Call, _printMethod);
+                for (int i = 0; i < stmt.Value; i++)
+                {
+                    _il.Emit(OpCodes.Ldloc, _Array);
+                    _il.Emit(OpCodes.Ldloc, _Ptr);
+                    _il.Emit(OpCodes.Ldelem_I4);
+                    _il.Emit(OpCodes.Call, _printMethod);
+                }
             }
             else if (stmt is ReadInt)
             {
-                _il.Emit(OpCodes.Ldloc, _Array);
-                _il.Emit(OpCodes.Ldloc, _Ptr);
-                _il.Emit(OpCodes.Call, _readMethod);
+                for (int i = 0; i < stmt.Value; i++)
+                {
+                    _il.Emit(OpCodes.Ldloc, _Array);
+                    _il.Emit(OpCodes.Ldloc, _Ptr);
+                    _il.Emit(OpCodes.Call, _readMethod);
+                }
             }
             else if (stmt is PointerStatement)
             {
                 PointerStatement p = (PointerStatement)stmt;
 
                 _il.Emit(OpCodes.Ldloc, _Ptr);
-                _il.Emit(OpCodes.Ldc_I4_1);
+                _il.Emit(OpCodes.Ldc_I4, p.Value);
 
                 if (p.Op == PointerOperator.Inc)
                 {
