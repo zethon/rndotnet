@@ -37,10 +37,11 @@ namespace RubiksNotation
 
                 switch (c)
                 {
+                    case 'U':
                     case 'R':
                     case 'F':
                         bRet = true;
-                        break;
+                    break;
 
                     default:
                         bRet = false;
