@@ -27,96 +27,146 @@ namespace RubiksNotation
                 throw new Exception("error RCNC002: expected EOF");
         }
 
+        private bool IsCommand(object obj)
+        {
+            bool bRet = false;
+
+            if (obj is char)
+            {
+                char c = (char)obj;
+
+                switch (c)
+                {
+                    case 'R':
+                    case 'F':
+                        bRet = true;
+                        break;
+
+                    default:
+                        bRet = false;
+                        break;
+                }
+            }
+            else if (obj is Symbols && (Symbols)obj == Symbols.OpenParen || (Symbols)obj == Symbols.CloseParen)
+            {
+                bRet = true;
+            }
+
+            return bRet;
+        }
+
+
+        private bool ParseIsPrime()
+        {
+            bool bRet = false;
+            int tempdex = _index+1;
+
+            while (tempdex < _tokens.Count() && !IsCommand(_tokens[tempdex]))
+            {
+                if (_tokens[tempdex] is Symbols && (Symbols)_tokens[tempdex] == Symbols.Prime)
+                {
+                    bRet = !bRet;
+                }
+
+                tempdex++;
+            }
+
+            return bRet;
+        }
+
+        private int ParseIntLiteral()
+        {
+            int iRet = 1;
+            int tempdex = _index+1;
+
+            while (tempdex < _tokens.Count() && !IsCommand(_tokens[tempdex]))
+            {
+                if (_tokens[tempdex] is int)
+                {
+                    iRet = (int)_tokens[tempdex];
+                    break;
+                }
+
+                tempdex++;
+            }
+
+            return iRet;
+        }
+
+        private void IncrementIndex()
+        {
+            _index++;
+
+            while (_index < _tokens.Count() && !IsCommand(_tokens[_index]))
+            {
+                _index++;
+            }
+        }
+
         private Statement ParseStatement()
         {
             Statement result = null;
 
-            if (_index == _tokens.Count())
+            if (_index >= _tokens.Count())
             {
                 throw new Exception("error RCNC003: expected statement, got EOF");
             }
 
-            if (_tokens[_index] is char && (char)_tokens[_index] == 'U')
+            if (_tokens[_index] is char && (char)_tokens[_index] == 'R')
             {
-                MathStatement stmt = new MathStatement();
-                stmt.Op = MathOperator.Add;
-
-                if (_index + 1 < _tokens.Count())
-                {
-                    while (_tokens[_index + 1] is int || _tokens[_index + 1] == Scanner.Prime)
-                    {
-                        if (_tokens[_index + 1] is int)
-                        {
-                            stmt.Value = (int)_tokens[_index + 1];
-                        }
-                        else
-                        {
-                            stmt.Op = stmt.Op == MathOperator.Add ? MathOperator.Subtract : MathOperator.Add;
-                        }
-
-                        _index++;
-                    }
-                }
+                MathStatement stmt = new MathStatement 
+                { 
+                    Op = ParseIsPrime() ? MathOperator.Subtract : MathOperator.Add,
+                    Value = ParseIntLiteral()
+                };
 
                 result = stmt;
-                _index++;
+                IncrementIndex();
             }
             else if (_tokens[_index] is char && (char)_tokens[_index] == 'F')
             {
-                //_index++;
+                Statement stmt;
 
-                Statement stmt = null;
-
-                if (_index + 1 < _tokens.Count())
+                if (ParseIsPrime())
                 {
-                    while (_tokens[_index+1] == Scanner.Prime)
-                    {
-                        if (stmt == null || stmt is ReadInt)
-                        {
-                            stmt = new Print();
-                        }
-                        else
-                        {
-                            stmt = new ReadInt();
-                        }
-
-                        _index++;
-                    }
+                    stmt = new ReadInt();
                 }
+                else
+                {
+                    stmt = new Print();
+                }
+                
+                stmt.Value = ParseIntLiteral();
+                
                 result = stmt;
-                _index++;
+                IncrementIndex();
             }
-            else if (_tokens[_index] == Scanner.OpenParen)
+            else if (_tokens[_index] is Symbols && (Symbols)_tokens[_index] == Symbols.OpenParen)
             {
                 _index++;
-
                 WhileStatement stmt = new WhileStatement();
                 stmt.Body = ParseStatement();
 
-                if (_index == _tokens.Count() || _tokens[_index] != Scanner.CloseParen)
+                result = stmt;
+
+                if (_index >= _tokens.Count() || !(_tokens[_index] is Symbols) || (Symbols)_tokens[_index] != Symbols.CloseParen)
                 {
-                    throw new Exception("error RCNC004: expected ')'");
+                    throw new Exception("RCNC0004: unmatched ')'");
                 }
 
                 _index++;
             }
 
-            //if (_index <= _tokens.Count())
-            //{
-                if (_index <= _tokens.Count() )
-                    //&& 
-                      //  _tokens[_index] != Scanner.CloseParen && _tokens[_index] != Scanner.CloseBracket)
-                {
-                    Sequence seq = new Sequence();
-                    seq.First = result;
-                    seq.Second = ParseStatement();
-                    result = seq;
-                }
-            //}
+            if (_index  < _tokens.Count() && (!(_tokens[_index] is Symbols) || (Symbols)_tokens[_index] != Symbols.CloseParen))
+            {
+                Sequence seq = new Sequence();
+                seq.First = result;
+                seq.Second = ParseStatement();
 
+                result = seq;
+            }
 
             return result;
-         
         }
 
     }

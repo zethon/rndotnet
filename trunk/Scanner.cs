@@ -6,19 +6,22 @@ using System.IO;
 
 namespace RubiksNotation
 {
+    public enum Symbols
+    {
+        OpenParen,
+        CloseParen,
+        Prime
+    }
+
     public sealed class Scanner
     {
+
+
         private readonly IList<object> _results;
         public IList<object> Tokens
         {
             get { return _results; }
         }
-
-        public static readonly object OpenParen = new object();
-        public static readonly object CloseParen = new object();
-        public static readonly object OpenBracket = new object();
-        public static readonly object CloseBracket = new object();
-        public static readonly object Prime = new object();
 
         public Scanner(TextReader input)
         {
@@ -66,27 +69,17 @@ namespace RubiksNotation
                 {
                     case '\'':
                         input.Read();
-                        _results.Add(Scanner.Prime);
+                        _results.Add(Symbols.Prime);
                     break;
 
                     case '(':
                         input.Read();
-                        _results.Add(Scanner.OpenParen);
+                        _results.Add(Symbols.OpenParen);
                     break;
 
                     case ')':
                         input.Read();
-                        _results.Add(Scanner.CloseParen);
-                    break;
-
-                    case '[':
-                        input.Read();
-                        _results.Add(Scanner.OpenBracket);
-                    break;
-
-                    case ']':
-                        input.Read();
-                        _results.Add(Scanner.CloseBracket);
+                        _results.Add(Symbols.CloseParen);
                     break;
 
                     default:
