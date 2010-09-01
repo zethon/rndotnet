@@ -4,8 +4,8 @@
 
 The prototype will implement the eight commands of the [http://en.wikipedia.org/wiki/Brainfuck Brainfuck] programming language mapped to the following notation
 || *RCN* || Brainfuck || description ||
-|| *U* || *<* || increment the data pointer to the next cell to the right ||
-|| *U'* || *>* || decrement the data pointer to the next cell to the right ||
+|| *U* || *>* || increment the data pointer to the next cell to the right ||
+|| *U'* || *<* || decrement the data pointer to the next cell to the right ||
 || *R* || *>* || increment the byte at the data pointer ||
 || *R'* || *>* || decrement the byte at the data pointer ||
 || *F* || *.* || output the byte at the data pointer || 
