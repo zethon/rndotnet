@@ -141,6 +141,17 @@ namespace RubiksNotation
                 result = stmt;
                 IncrementIndex();
             }
+            else if (_tokens[_index] is char && (char)_tokens[_index] == 'U')
+            {
+                Statement stmt = new PointerStatement
+                {
+                    Op = ParseIsPrime() ? PointerOperator.Dec : PointerOperator.Inc,
+                    Value = ParseIntLiteral()
+                };
+
+                result = stmt;
+                IncrementIndex();
+            }
             else if (_tokens[_index] is Symbols && (Symbols)_tokens[_index] == Symbols.OpenParen)
             {
                 _index++;
@@ -151,10 +162,14 @@ namespace RubiksNotation
 
                 if (_index >= _tokens.Count() || !(_tokens[_index] is Symbols) || (Symbols)_tokens[_index] != Symbols.CloseParen)
                 {
-                    throw new Exception("RCNC0004: unmatched ')'");
+                    throw new Exception("RCNC004: unmatched ')'");
                 }
 
                 _index++;
+            }
+            else
+            {
+                throw new Exception("RCNC005: unrecognized command token");
             }
 
             if (_index  < _tokens.Count() && (!(_tokens[_index] is Symbols) || (Symbols)_tokens[_index] != Symbols.CloseParen))
